@@ -1,1 +1,1 @@
-# WDP301_SE1849_BE
+Backend of JobLink project
