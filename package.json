@@ -1,0 +1,48 @@
+{
+  "name": "be",
+  "version": "1.0.0",
+  "license": "ISC",
+  "author": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.37.0",
+    "@faker-js/faker": "^9.9.0",
+    "@pinecone-database/pinecone": "^6.1.2",
+    "axios": "^1.9.0",
+    "bcryptjs": "^3.0.2",
+    "be": "file:",
+    "body-parser": "^2.2.0",
+    "cloudinary": "^2.6.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "eslint": "^9.28.0",
+    "express": "^5.1.0",
+    "google-auth-library": "^10.4.0",
+    "googleapis": "^149.0.0",
+    "jose": "^6.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.14.3",
+    "multer": "^2.0.1",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.3",
+    "openai": "^6.7.0",
+    "socket.io": "^4.8.1",
+    "stripe": "^18.2.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.1.0",
+    "validator": "^13.15.15"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
+  },
+  "keywords": [],
+  "description": ""
+}
