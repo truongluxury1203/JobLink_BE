@@ -19,9 +19,12 @@ export const authMiddleware = async (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    const { payload } = await verifyAccessToken(token, process.env.JWT_SECRET);
+    const { payload } = await verifyAccessToken(token);
     req.user = payload;
   } catch (error) {
+    if (error.code === "ERR_JWT_EXPIRED") {
+      return next(new ErrorResponse(401, MESSAGE.JWT_EXPIRED));
+    }
     return next(new ErrorResponse(401, MESSAGE.JWT_INVALID));
   }
 
@@ -143,7 +146,7 @@ export const resetPasswordValidator = async (req, res, next) => {
       req.userId = payload.userId;
       next();
     } catch (err) {
-      if (err.name === "TokenExpiredError") {
+      if (err.code === "ERR_JWT_EXPIRED") {
         throw new ErrorResponse(400, MESSAGE.JWT_EXPIRED);
       }
       throw new ErrorResponse(400, MESSAGE.JWT_INVALID);

@@ -3,7 +3,7 @@ import { toResultError } from "../results/Result.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res) => {
   let statusCode = err.statusCode || 500;
   let message = err.message || MESSAGE.SYSTEM_ERROR;
 
@@ -27,12 +27,12 @@ const errorHandler = (err, req, res, next) => {
           .join(", ") || MESSAGE.VALIDATION_ERROR;
       break;
 
-    case err.name === "JsonWebTokenError":
+    case err.code === "ERR_JWT_INVALID" || err.code === "ERR_JWS_INVALID" || err.code === "ERR_JWS_SIGNATURE_VERIFICATION_FAILED" || err.name === "JsonWebTokenError":
       statusCode = 401;
       message = MESSAGE.JWT_INVALID;
       break;
 
-    case err.name === "TokenExpiredError":
+    case err.code === "ERR_JWT_EXPIRED" || err.name === "TokenExpiredError":
       statusCode = 401;
       message = MESSAGE.JWT_EXPIRED;
       break;
