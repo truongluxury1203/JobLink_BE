@@ -49,8 +49,16 @@ export const registerController = async (req, res) => {
     `${MESSAGE.EMAIL_VERIFY_BODY}: <a href="${verifyLink}">${verifyLink}</a>`
   );
 
-  sendMail(option, (error) => {
-    if (error) throw new ErrorResponse(500, MESSAGE.SEND_MAIL_ERROR);
+  // Gửi mail xác thực — dùng Promise để bắt lỗi đúng cách
+  await new Promise((resolve, reject) => {
+    sendMail(option, (error, info) => {
+      if (error) {
+        console.error("Send mail error:", error);
+        reject(new ErrorResponse(500, MESSAGE.SEND_MAIL_ERROR));
+      } else {
+        resolve(info);
+      }
+    });
   });
 
   return res.status(201).json(toResultOk({ msg: MESSAGE.REGISTER_VERIFY_SENT, statusCode: 201 }));
@@ -171,12 +179,19 @@ export const forgotPasswordController = async (req, res) => {
     "Đặt lại mật khẩu",
     `Nhấn vào link sau để đặt lại mật khẩu: ${resetLink}`
   );
-  // Gửi mail
-  sendMail(option, (error) => {
-    if (error) throw new ErrorResponse(500, MESSAGE.SEND_MAIL_ERROR);
-
-    return res.status(200).json(toResultOk({ msg: MESSAGE.FORGOT_PASSWORD_BODY }));
+  // Gửi mail reset password
+  await new Promise((resolve, reject) => {
+    sendMail(option, (error, info) => {
+      if (error) {
+        console.error("Send mail error:", error);
+        reject(new ErrorResponse(500, MESSAGE.SEND_MAIL_ERROR));
+      } else {
+        resolve(info);
+      }
+    });
   });
+
+  return res.status(200).json(toResultOk({ msg: MESSAGE.FORGOT_PASSWORD_BODY }));
 };
 
 /**
