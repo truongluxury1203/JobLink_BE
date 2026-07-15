@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 const resolveOrigins = () => {
-  const origin = process.env.CLIENT_URL || "http://localhost:5173";
+  const origin = process.env.CLIENT_URL || "http://localhost:5173,https://joblink-fe.vercel.app";
   return origin
     .split(",")
     .map((entry) => entry.trim())
