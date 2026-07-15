@@ -3,7 +3,8 @@ import { toResultError } from "../results/Result.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const errorHandler = (err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+const errorHandler = (err, req, res, next) => {
   let statusCode = err.statusCode || 500;
   let message = err.message || MESSAGE.SYSTEM_ERROR;
 
