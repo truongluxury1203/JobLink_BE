@@ -49,16 +49,11 @@ export const registerController = async (req, res) => {
     `${MESSAGE.EMAIL_VERIFY_BODY}: <a href="${verifyLink}">${verifyLink}</a>`
   );
 
-  // Gửi mail xác thực — dùng Promise để bắt lỗi đúng cách
-  await new Promise((resolve, reject) => {
-    sendMail(option, (error, info) => {
-      if (error) {
-        console.error("Send mail error:", error);
-        reject(new ErrorResponse(500, MESSAGE.SEND_MAIL_ERROR));
-      } else {
-        resolve(info);
-      }
-    });
+  // Gửi mail xác thực trong background (bỏ await) để phản hồi nhanh cho người dùng
+  sendMail(option, (error, info) => {
+    if (error) {
+      console.error("Send mail error:", error);
+    }
   });
 
   return res.status(201).json(toResultOk({ msg: MESSAGE.REGISTER_VERIFY_SENT, statusCode: 201 }));
