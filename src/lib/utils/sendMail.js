@@ -1,8 +1,14 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 /**
  * sendMail — wrapper tương thích với nodemailer callback API
@@ -10,18 +16,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
  */
 const sendMail = async (mailOptions, callback) => {
   try {
-    const { from, to, subject, html } = mailOptions;
-    const { error } = await resend.emails.send({
-      from: from || `JobLink <onboarding@resend.dev>`,
-      to: Array.isArray(to) ? to : [to],
-      subject,
-      html,
-    });
-    if (error) {
-      callback(error);
-    } else {
-      callback(null, { success: true });
-    }
+    const info = await transporter.sendMail(mailOptions);
+    callback(null, info);
   } catch (err) {
     callback(err);
   }
